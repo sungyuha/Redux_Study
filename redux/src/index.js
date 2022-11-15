@@ -7,18 +7,19 @@ const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
+number.innerText = 0;
 
 const countModifier = (count = 0, action) => {
   //... modify state
   // state를 argument(인자)로 가지게 됨
-  console.log(action);
+  //console.log(action);
   if (action.type === "ADD") {
     //console.log("they are telling me to add one");
     return count + 1;
   } else if(action.type === "MINUS") {
     return count -1;
   } else {
-    return 0;
+    return count;
   }
 };
 // data를 modify(찾고 수정하기)
@@ -56,12 +57,29 @@ const handleMinus = () => {
 //console.log(countStore.getStete());
 // reducer는 아주 중요
 
+/*countStore.dispatch({type: "ADD"});
 countStore.dispatch({type: "ADD"});
 countStore.dispatch({type: "ADD"});
 countStore.dispatch({type: "ADD"});
 countStore.dispatch({type: "ADD"});
-countStore.dispatch({type: "ADD"});
-countStore.dispatch({type: "MINUS"});
+countStore.dispatch({type: "MINUS"});*/
 // store, dispatch, action을 말하면 리덕스가 countModifier를 부름
 
-console.log(countStore.getState());
+//console.log(countStore.getState());
+
+const onChange = () => {
+  number.innerText = countStore.getState();
+}
+
+countStore.subscribe(onChange);
+
+const handleAdd = () => {
+  countStore.dispatch({type: "ADD"});
+};
+
+const handleMinus = () => {
+  countStore.dispatch({type: "MINUS"})
+};
+
+add.addEventListener("click", handleAdd);
+minus.addEventListener("click", handleMinus);
