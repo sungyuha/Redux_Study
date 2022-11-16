@@ -11,7 +11,8 @@ const reducer = (state = [], action) => {
   console.log(action);
   switch(action.type) {
     case ADD_TODO:
-      return [];
+      return [...state, {text: action.text, id: action.id}]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
+      // 이전 array의 컨텐츠로, 그리고 새로운 object로 array를 만듬
     case DELETE_TODO:
       return [];
     default:
@@ -30,6 +31,10 @@ const store = legacy_createStore(reducer);
   li.innerHTML = toDo;
   ul.appendChild(li);
 };*/
+
+// store를 수정할 수 있는 유일한 방법은 action을 보내는 방법
+
+store.subscribe(() => console.log(store.getState()));
 
 const onSubmit = e => {
   e.preventDefault();
