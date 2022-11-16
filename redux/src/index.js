@@ -41,11 +41,14 @@ const paintToDos = () => {
   ul.innerText = "";
   toDos.forEach(toDo => {
     const li = document.createElement("li");
+    const btn = document.createComment("button");
+    btn.innerText = "DEL";
     li.id = toDo.id;
     li.innerText = toDo.text;
+    li.appendChild(btn);
     ul.appendChild(li);
-  })
-}
+  });
+};
 
 store.subscribe(paintToDos);
 
