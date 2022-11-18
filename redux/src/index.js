@@ -7,14 +7,23 @@ const ul = document.querySelector("ul");
 const ADD_TODO = "ADD_TODO"
 const DELETE_TODO = "DELETE_TODO";
 
-const addToDo = (text) => {
+const addToDo = text => {
   return {
-    type: ADD_TODO, text
-  }
-}
+    type: ADD_TODO, 
+    text
+  };
+};
+
+const deleteToDo = id => {
+  return {
+    type: DELETE_TODO,
+    id
+    //store.dispatch({type: DELETE_TODO, id});
+  };
+};
 
 const reducer = (state = [], action) => {
-  console.log(action);
+  //console.log(action);
   switch(action.type) {
     case ADD_TODO:
       return [{text: action.text, id: Date.now()}, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
@@ -23,7 +32,7 @@ const reducer = (state = [], action) => {
       return [];
     default:
       return state;
-  }
+  };
 };
 
 const store = legacy_createStore(reducer);
@@ -42,14 +51,14 @@ const store = legacy_createStore(reducer);
 
 store.subscribe(() => console.log(store.getState()));
 
-const dispatchaddToDo = (text) => {
+const dispatchAddToDo = (text) => {
   store.dispatch(addToDo(text));
 };
 
-const deleteToDo = (e) => {
+const dispatchDeleteToDo = e => {
   //store.dispatch({type: ADD_TODO, text})
-  const id = e.target.paintNode.id;
-  store.dispatch({type: DELETE_TODO, id});
+  const id = e.target.parentNode.id;
+  store.dispatch(deleteToDo(id));
 };
 
 const paintToDos = () => {
@@ -59,7 +68,7 @@ const paintToDos = () => {
     const li = document.createElement("li");
     const btn = document.createElement("button");
     btn.innerText = "DEL";
-    btn.addEventListener("click", deleteToDo)
+    btn.addEventListener("click", dispatchDeleteToDo);
     //btn.type = "button";
     li.id = toDo.id;
     li.innerText = toDo.text;
@@ -76,7 +85,7 @@ const onSubmit = e => {
   input.value = "";
   //createToDo(toDo);
   //store.dispatch({type: ADD_TODO, text: toDo});
-  dispatchaddToDo(toDo);
+  dispatchAddToDo(toDo);
   //dispatchAddToDo(toDo);
 };
 // input에서 얻은 텍스트를 인자로 보냄
