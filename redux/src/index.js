@@ -29,7 +29,10 @@ const reducer = (state = [], action) => {
       return [{text: action.text, id: Date.now()}, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
       // 이전 array의 컨텐츠로, 그리고 새로운 object로 array를 만듬
     case DELETE_TODO:
-      return [];
+      return state.filter(toDo => toDo.id !== action.id); // todo.id 는 action.id와 같으면 안됨
+      // 삭제할 todo의 id에 해당하지 않는 todo들을 detele 처리
+      // HTML로 부터 받아오는 id는 String 형태
+      // return state.filter()를 하는것
     default:
       return state;
   };
@@ -57,7 +60,7 @@ const dispatchAddToDo = (text) => {
 
 const dispatchDeleteToDo = e => {
   //store.dispatch({type: ADD_TODO, text})
-  const id = e.target.parentNode.id;
+  const id = parseInt(e.target.parentNode.id);
   store.dispatch(deleteToDo(id));
 };
 
