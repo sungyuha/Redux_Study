@@ -7,9 +7,9 @@ const ul = document.querySelector("ul");
 const ADD_TODO = "ADD_TODO"
 const DELETE_TODO = "DELETE_TODO";
 
-const addToDo = text => {
-  return {
-    type: ADD_TODO, 
+const addToDo = text => { // action creator가 있음. 
+  return { 
+    type: ADD_TODO, // objects를 return 하고 있음
     text
   };
 };
@@ -22,14 +22,19 @@ const deleteToDo = id => {
   };
 };
 
-const reducer = (state = [], action) => {
+const reducer = (state = [], action) => { // action에 type: ADD_TODO에 보내주고 있음
   //console.log(action);
   switch(action.type) {
     case ADD_TODO:
-      return [{text: action.text, id: Date.now()}, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
+      const newToDoObj = {text: action.text, id: Date.now()};
+      return [newToDoObj, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
       // 이전 array의 컨텐츠로, 그리고 새로운 object로 array를 만듬
     case DELETE_TODO:
-      return state.filter(toDo => toDo.id !== action.id); // todo.id 는 action.id와 같으면 안됨
+      const cleaned = state.filter(toDo => toDo.id !== action.id);
+      return cleaned;
+      //return state.filter(toDo => toDo.id !== action.id); // todo.id 는 action.id와 같으면 안됨
+      // 1. 현재 코드는 state에 object를 삭제하고 있지 않고, 새로운 state를 만들고 있음
+      // 2. 삭제할 object를 빼고 filter를 사용함
       // 삭제할 todo의 id에 해당하지 않는 todo들을 detele 처리
       // HTML로 부터 받아오는 id는 String 형태
       // return state.filter()를 하는것
@@ -54,8 +59,8 @@ const store = legacy_createStore(reducer);
 
 store.subscribe(() => console.log(store.getState()));
 
-const dispatchAddToDo = (text) => {
-  store.dispatch(addToDo(text));
+const dispatchAddToDo = (text) => { 
+  store.dispatch(addToDo(text)); // function은 오로지 action을 dispatch하기 위한 용도
 };
 
 const dispatchDeleteToDo = e => {
