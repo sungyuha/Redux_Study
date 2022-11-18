@@ -7,11 +7,17 @@ const ul = document.querySelector("ul");
 const ADD_TODO = "ADD_TODO"
 const DELETE_TODO = "DELETE_TODO";
 
+const addToDo = (text) => {
+  return {
+    type: ADD_TODO, text
+  }
+}
+
 const reducer = (state = [], action) => {
   console.log(action);
   switch(action.type) {
     case ADD_TODO:
-      return [...state, {text: action.text, id: action.id()}, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
+      return [{text: action.text, id: Date.now()}, ...state]; // 새로운 array를 만듬 -> 과거의 state와 새로운 TODO를 갖고 있게 됨
       // 이전 array의 컨텐츠로, 그리고 새로운 object로 array를 만듬
     case DELETE_TODO:
       return [];
@@ -36,13 +42,25 @@ const store = legacy_createStore(reducer);
 
 store.subscribe(() => console.log(store.getState()));
 
+const dispatchaddToDo = (text) => {
+  store.dispatch(addToDo(text));
+};
+
+const deleteToDo = (e) => {
+  //store.dispatch({type: ADD_TODO, text})
+  const id = e.target.paintNode.id;
+  store.dispatch({type: DELETE_TODO, id});
+};
+
 const paintToDos = () => {
   const toDos = store.getState();
-  ul.innerText = "";
+  ul.innerHTML = "";
   toDos.forEach(toDo => {
     const li = document.createElement("li");
-    const btn = document.createComment("button");
+    const btn = document.createElement("button");
     btn.innerText = "DEL";
+    btn.addEventListener("click", deleteToDo)
+    //btn.type = "button";
     li.id = toDo.id;
     li.innerText = toDo.text;
     li.appendChild(btn);
@@ -52,17 +70,14 @@ const paintToDos = () => {
 
 store.subscribe(paintToDos);
 
-const addToDo = (text) => {
-  store.dispatch({type: ADD_TODO, text})
-};
-
 const onSubmit = e => {
   e.preventDefault();
   const toDo = input.value; // toDo 변수는 여기 이 input값에서 할당 됨
   input.value = "";
   //createToDo(toDo);
   //store.dispatch({type: ADD_TODO, text: toDo});
-  addToDo(toDo);
+  dispatchaddToDo(toDo);
+  //dispatchAddToDo(toDo);
 };
 // input에서 얻은 텍스트를 인자로 보냄
 // list item을 만들어 주고 list의 text를 받은 여기의 텍스트로 변경해줌
