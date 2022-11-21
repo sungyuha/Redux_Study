@@ -39,5 +39,10 @@ const store = legacy_createStore(reducer);
 // 그래서 모든 부분이 다시 render 되기를 원함
 export default store;
 
+export const actionCreators = {
+    addToDo,
+    deleteToDo
+};
+
 /*store.getState()
 // 현재의 state를 전달해줌*/
