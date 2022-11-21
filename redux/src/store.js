@@ -17,7 +17,7 @@ export const deleteToDo = id => {
     };
 };
 
-const reducer = (state = [], action) => {
+const reducer = (state = [], action) => { // 현재의 state는 비어있는 array
     switch (action.type) {
         case ADD:
             return [{ text: action.text, id: Date.now() }, ...state];
@@ -38,3 +38,6 @@ const store = legacy_createStore(reducer);
 // 왜냐하면 store의 변동사항에 대해 subscribe 하고 싶음
 // 그래서 모든 부분이 다시 render 되기를 원함
 export default store;
+
+/*store.getState()
+// 현재의 state를 전달해줌*/
