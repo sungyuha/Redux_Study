@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { connect } from "react-redux";
 import { actionCreators } from "../store";
+import ToDo from "../components/ToDo";
 
 // const Home = () => "Home";
 
@@ -12,7 +13,9 @@ function Home({toDos, addToDo}) { // Home은 props를 가지게 됨
     }
     function onSubmit(e) {
         e.preventDefault();
+        console.log('1');
         addToDo(Text);
+        console.log('2');
         setText("");
     } 
     return (
@@ -23,7 +26,10 @@ function Home({toDos, addToDo}) { // Home은 props를 가지게 됨
                 <button>Add</button>
             </form>
             <ul>
-                {JSON.stringify(toDos)}
+                {/* {JSON.stringify(toDos)} */}
+                {toDos.map(toDo => (
+                    <ToDo {...toDo} key={toDo.id}/>
+                ))}
             </ul>
         </>
     );
@@ -32,6 +38,7 @@ function Home({toDos, addToDo}) { // Home은 props를 가지게 됨
 function mapStateToProps (state) {
     //console.log(state, ownProps);
     return { toDos: state };
+    // mapSTateToProps로부터 받아옴
 }
 
 function mapDispatchToProps(dispatch) {

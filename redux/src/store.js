@@ -13,7 +13,7 @@ export const addToDo = text => {
 export const deleteToDo = id => {
     return {
         type: DELETE,
-        id
+        id: parseInt(id)
     };
 };
 
@@ -22,7 +22,7 @@ const reducer = (state = [], action) => { // 현재의 state는 비어있는 arr
         case ADD:
             return [{ text: action.text, id: Date.now() }, ...state];
         case  DELETE:
-            return state.filter(toDo => toDo !== action.id);
+            return state.filter(toDo => toDo.id !== action.id);
         default:
             return state;    
     }
