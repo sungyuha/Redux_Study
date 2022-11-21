@@ -13,7 +13,7 @@ export const addToDo = text => {
 export const deleteToDo = id => {
     return {
         type: DELETE,
-        id: parseInt(id)
+        id
     };
 };
 

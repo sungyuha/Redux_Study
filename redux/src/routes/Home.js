@@ -28,7 +28,7 @@ function Home({toDos, addToDo}) { // Home은 props를 가지게 됨
             <ul>
                 {/* {JSON.stringify(toDos)} */}
                 {toDos.map(toDo => (
-                    <ToDo {...toDo} key={toDo.id}/>
+                    <ToDo {...toDo} key={toDo.id} />
                 ))}
             </ul>
         </>
